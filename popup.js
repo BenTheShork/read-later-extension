@@ -53,15 +53,21 @@ async function saveCurrentPage() {
         });
 
         const extractedContent = results[0].result;
+        
+        const newArticle = {
+            ...extractedContent,
+            id: Date.now()  
+        };
 
-        await chrome.runtime.sendMessage({
-            action: "saveArticle",
-            data: extractedContent
-        });
+        const { articles = [] } = await chrome.storage.local.get('articles');
+        
+        const updatedArticles = [newArticle, ...articles];
+        
+        await chrome.storage.local.set({ articles: updatedArticles });
+
+        renderArticles(updatedArticles);
 
         showMessage('Page saved successfully!', 'success');
-        
-        await loadArticles();
 
     } catch (error) {
         console.error('Error saving page:', error);
@@ -105,16 +111,31 @@ function renderArticles(articles) {
         return;
     }
 
-    articleList.innerHTML = articles.map(article => `
-        <div class="article-item">
+    const fragment = document.createDocumentFragment();
+    
+    articles.forEach(article => {
+        const articleElement = document.createElement('div');
+        articleElement.className = 'article-item';
+        articleElement.innerHTML = `
             <h3>${escapeHtml(article.title)}</h3>
             <p class="timestamp">${new Date(article.timestamp).toLocaleDateString()}</p>
             <div class="actions">
-                <button onclick="openArticle(${article.id})">Read</button>
-                <button onclick="deleteArticle(${article.id})">Delete</button>
+                <button class="read-btn">Read</button>
+                <button class="delete-btn">Delete</button>
             </div>
-        </div>
-    `).join('');
+        `;
+
+        const readBtn = articleElement.querySelector('.read-btn');
+        const deleteBtn = articleElement.querySelector('.delete-btn');
+        
+        readBtn.addEventListener('click', () => openArticle(article.id));
+        deleteBtn.addEventListener('click', () => deleteArticle(article.id));
+        
+        fragment.appendChild(articleElement);
+    });
+
+    articleList.innerHTML = '';
+    articleList.appendChild(fragment);
 }
 
 async function openArticle(id) {
@@ -135,7 +156,9 @@ async function deleteArticle(id) {
         const { articles = [] } = await chrome.storage.local.get('articles');
         const updatedArticles = articles.filter(a => a.id !== id);
         await chrome.storage.local.set({ articles: updatedArticles });
-        await loadArticles();
+        
+        renderArticles(updatedArticles);
+        
         showMessage('Article deleted', 'success');
     } catch (error) {
         console.error('Error deleting article:', error);
