@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    initializeTabs();
     loadArticles();
     
     document.getElementById('saveButton').addEventListener('click', saveCurrentPage);
@@ -6,6 +7,24 @@ document.addEventListener('DOMContentLoaded', () => {
         filterArticles(e.target.value);
     });
 });
+
+function initializeTabs() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+            
+            button.classList.add('active');
+            const targetPanel = document.getElementById(button.dataset.tab);
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+            }
+            
+            loadArticles();
+        });
+    });
+}
 
 async function saveCurrentPage() {
     try {
@@ -47,27 +66,27 @@ async function saveCurrentPage() {
                     title: document.title,
                     url: window.location.href,
                     content: getContent(),
-                    timestamp: new Date().toISOString()
+                    timestamp: new Date().toISOString(),
+                    id: Date.now()
                 };
             }
         });
 
+        if (!results || !results[0] || !results[0].result) {
+            throw new Error('Failed to extract content from page');
+        }
+
         const extractedContent = results[0].result;
         
-        const newArticle = {
-            ...extractedContent,
-            id: Date.now()  
-        };
-
         const { articles = [] } = await chrome.storage.local.get('articles');
         
-        const updatedArticles = [newArticle, ...articles];
+        const updatedArticles = [extractedContent, ...articles];
         
         await chrome.storage.local.set({ articles: updatedArticles });
 
-        renderArticles(updatedArticles);
-
         showMessage('Page saved successfully!', 'success');
+        
+        loadArticles();
 
     } catch (error) {
         console.error('Error saving page:', error);
@@ -82,7 +101,15 @@ async function saveCurrentPage() {
 async function loadArticles() {
     try {
         const { articles = [] } = await chrome.storage.local.get('articles');
-        renderArticles(articles);
+        const activeTab = document.querySelector('.tab-button.active');
+        
+        if (!activeTab) return;
+        
+        const tabName = activeTab.dataset.tab;
+        const containerName = tabName === 'recent' ? 'recentArticleList' : 'allArticleList';
+        const articlesToShow = tabName === 'recent' ? articles.slice(0, 5) : articles;
+        
+        renderArticles(articlesToShow, containerName);
     } catch (error) {
         console.error('Error loading articles:', error);
         showMessage('Failed to load articles');
@@ -96,15 +123,24 @@ async function filterArticles(searchTerm) {
             article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             article.url.toLowerCase().includes(searchTerm.toLowerCase())
         );
-        renderArticles(filtered);
+        
+        const activeTab = document.querySelector('.tab-button.active');
+        if (!activeTab) return;
+        
+        const tabName = activeTab.dataset.tab;
+        const containerName = tabName === 'recent' ? 'recentArticleList' : 'allArticleList';
+        const articlesToShow = tabName === 'recent' ? filtered.slice(0, 5) : filtered;
+        
+        renderArticles(articlesToShow, containerName);
     } catch (error) {
         console.error('Error filtering articles:', error);
         showMessage('Failed to filter articles');
     }
 }
 
-function renderArticles(articles) {
-    const articleList = document.getElementById('articleList');
+function renderArticles(articles, containerId) {
+    const articleList = document.getElementById(containerId);
+    if (!articleList) return;
     
     if (articles.length === 0) {
         articleList.innerHTML = '<p class="no-articles">No articles saved yet.</p>';
@@ -120,8 +156,14 @@ function renderArticles(articles) {
             <h3>${escapeHtml(article.title)}</h3>
             <p class="timestamp">${new Date(article.timestamp).toLocaleDateString()}</p>
             <div class="actions">
-                <button class="read-btn">Read</button>
-                <button class="delete-btn">Delete</button>
+                <button class="read-btn">
+                    <span class="material-icons">open_in_new</span>
+                    Read
+                </button>
+                <button class="delete-btn">
+                    <span class="material-icons">delete</span>
+                    Delete
+                </button>
             </div>
         `;
 
@@ -157,8 +199,7 @@ async function deleteArticle(id) {
         const updatedArticles = articles.filter(a => a.id !== id);
         await chrome.storage.local.set({ articles: updatedArticles });
         
-        renderArticles(updatedArticles);
-        
+        loadArticles(); 
         showMessage('Article deleted', 'success');
     } catch (error) {
         console.error('Error deleting article:', error);
@@ -168,6 +209,8 @@ async function deleteArticle(id) {
 
 function showMessage(message, type = 'error') {
     const container = document.querySelector('.container');
+    if (!container) return;
+
     const existingMessage = document.querySelector('.message');
     if (existingMessage) {
         existingMessage.remove();
