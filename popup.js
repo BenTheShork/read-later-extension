@@ -120,7 +120,7 @@ async function saveCurrentPage() {
   } finally {
     const saveButton = document.getElementById("saveButton");
     saveButton.innerHTML =
-      '<span class="material-icons">bookmark_add</span> Save Current Page';
+      'Save Current Page';
     saveButton.disabled = false;
   }
 }
