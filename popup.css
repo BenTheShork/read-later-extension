@@ -8,32 +8,32 @@
     --text-secondary: #5f6368;
     --shadow-1: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
     --shadow-2: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
-  }
-  
-  body {
+}
+
+body {
     margin: 0;
     font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
     width: 400px;
     background: var(--background-color);
     color: var(--text-primary);
-  }
-  
-  .container {
+}
+
+.container {
     display: flex;
     flex-direction: column;
     height: 600px;
-  }
-  
-  .save-button-container {
+}
+
+.save-button-container {
     position: sticky;
     top: 0;
     z-index: 100;
     padding: 12px 16px;
     background: var(--background-color);
     border-bottom: 1px solid var(--border-color);
-  }
-  
-  .save-button {
+}
+
+.save-button {
     width: 100%;
     padding: 12px 24px;
     background: var(--primary-color);
@@ -49,26 +49,26 @@
     cursor: pointer;
     transition: background-color 0.2s;
     box-shadow: var(--shadow-1);
-  }
-  
-  .save-button:hover {
+}
+
+.save-button:hover {
     background: var(--hover-color);
     box-shadow: var(--shadow-2);
-  }
-  
-  .save-button:disabled {
+}
+
+.save-button:disabled {
     background: var(--text-secondary);
     cursor: not-allowed;
-  }
-  
-  .tabs {
+}
+
+.tabs {
     display: flex;
     border-bottom: 1px solid var(--border-color);
     background: var(--background-color);
     padding: 0 16px;
-  }
-  
-  .tab-button {
+}
+
+.tab-button {
     padding: 12px 16px;
     border: none;
     background: none;
@@ -81,13 +81,13 @@
     gap: 8px;
     position: relative;
     transition: color 0.2s;
-  }
-  
-  .tab-button.active {
+}
+
+.tab-button.active {
     color: var(--primary-color);
-  }
-  
-  .tab-button.active::after {
+}
+
+.tab-button.active::after {
     content: '';
     position: absolute;
     bottom: -1px;
@@ -96,33 +96,33 @@
     height: 3px;
     background: var(--primary-color);
     border-radius: 3px 3px 0 0;
-  }
-  
-  .search-container {
+}
+
+.search-container {
     padding: 12px 16px;
     background: var(--background-color);
-  }
-  
-  .search-box {
+}
+
+.search-box {
     display: flex;
     align-items: center;
     padding: 8px 16px;
     background: var(--surface-color);
     border-radius: 24px;
     border: 1px solid var(--border-color);
-  }
-  
-  .search-box:focus-within {
+}
+
+.search-box:focus-within {
     background: var(--background-color);
     border-color: var(--primary-color);
-  }
-  
-  .search-box .material-icons {
+}
+
+.search-box .material-icons {
     color: var(--text-secondary);
     margin-right: 8px;
-  }
-  
-  #search {
+}
+
+#search {
     border: none;
     background: none;
     outline: none;
@@ -131,57 +131,58 @@
     color: var(--text-primary);
     background: var(--surface-color);
 
-  }
-  #search:focus-within {
+}
+
+#search:focus-within {
     background: var(--background-color);
     border-color: var(--primary-color);
-  }
-  
-  .tab-content {
+}
+
+.tab-content {
     flex: 1;
     overflow-y: auto;
-  }
-  
-  .tab-panel {
+}
+
+.tab-panel {
     display: none;
     padding: 16px;
-  }
-  
-  .tab-panel.active {
+}
+
+.tab-panel.active {
     display: block;
-  }
-  
-  .article-item {
+}
+
+.article-item {
     background: var(--background-color);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 16px;
     margin-bottom: 12px;
     transition: box-shadow 0.2s;
-  }
-  
-  .article-item:hover {
+}
+
+.article-item:hover {
     box-shadow: var(--shadow-1);
-  }
-  
-  .article-item h3 {
+}
+
+.article-item h3 {
     margin: 0 0 8px 0;
     font-size: 16px;
     color: var(--text-primary);
-  }
-  
-  .timestamp {
+}
+
+.timestamp {
     color: var(--text-secondary);
     font-size: 12px;
     margin: 0 0 12px 0;
-  }
-  
-  .actions {
+}
+
+.actions {
     display: flex;
     gap: 8px;
-  }
-  
-  .actions button {
+}
+
+.actions button {
     padding: 8px 16px;
     border: 1px solid var(--border-color);
     border-radius: 16px;
@@ -191,13 +192,13 @@
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s;
-  }
-  
-  .actions button:hover {
+}
+
+.actions button:hover {
     background: var(--surface-color);
-  }
-  
-  .message {
+}
+
+.message {
     position: fixed;
     bottom: 16px;
     left: 50%;
@@ -208,25 +209,95 @@
     animation: slideUp 0.3s ease-out;
     z-index: 1000;
     box-shadow: var(--shadow-2);
-  }
-  
-  .message-success {
+}
+
+.message-success {
     background: #e6f4ea;
     color: #1e8e3e;
-  }
-  
-  .message-error {
+}
+
+.message-error {
     background: #fce8e6;
     color: #d93025;
-  }
-  
-  @keyframes slideUp {
+}
+
+@keyframes slideUp {
     from {
-      transform: translate(-50%, 100%);
-      opacity: 0;
+        transform: translate(-50%, 100%);
+        opacity: 0;
     }
+
     to {
-      transform: translate(-50%, 0);
-      opacity: 1;
+        transform: translate(-50%, 0);
+        opacity: 1;
     }
-  }
+}
+
+.article-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.category-badge {
+    background: var(--primary-color);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.article-meta {
+    display: flex;
+    gap: 16px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.article-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.article-meta .material-icons {
+    font-size: 14px;
+}
+
+.article-summary {
+    background: var(--surface-color);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.article-keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.keyword-chip {
+    background: var(--surface-color);
+    color: var(--primary-color);
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.loading {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}

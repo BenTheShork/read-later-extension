@@ -1,46 +1,50 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>Read Later Plus</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css">
-  <link rel="stylesheet" href="popup.css">
+    <title>Read Later Plus</title>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css">
+    <link rel="stylesheet" href="popup.css">
 </head>
+
 <body>
-  <div class="container">
-    <div class="save-button-container">
-      <button id="saveButton" class="save-button">
-        Save Current Page
-      </button>
-    </div>
+    <div class="container">
+        <div class="save-button-container">
+            <button id="saveButton" class="save-button">
+                Save Current Page
+            </button>
+        </div>
 
-    <div class="tabs">
-      <button class="tab-button active" data-tab="recent">
-        <span class="material-icons">history</span>
-        Recent
-      </button>
-      <button class="tab-button" data-tab="all">
-        <span class="material-icons">bookmark</span>
-        All Bookmarks
-      </button>
-    </div>
+        <div class="tabs">
+            <button class="tab-button active" data-tab="recent">
+                <span class="material-icons">history</span>
+                Recent
+            </button>
+            <button class="tab-button" data-tab="all">
+                <span class="material-icons">bookmark</span>
+                All Bookmarks
+            </button>
+        </div>
 
-    <div class="search-container">
-      <div class="search-box">
-        <span class="material-icons">search</span>
-        <input type="text" id="search" placeholder="Search saved pages...">
-      </div>
-    </div>
+        <div class="search-container">
+            <div class="search-box">
+                <span class="material-icons">search</span>
+                <input type="text" id="search" placeholder="Search saved pages...">
+            </div>
+        </div>
 
-    <div class="tab-content">
-      <div id="recent" class="tab-panel active">
-        <div id="recentArticleList" class="article-list"></div>
-      </div>
+        <div class="tab-content">
+            <div id="recent" class="tab-panel active">
+                <div id="recentArticleList" class="article-list"></div>
+            </div>
 
-      <div id="all" class="tab-panel">
-        <div id="allArticleList" class="article-list"></div>
-      </div>
+            <div id="all" class="tab-panel">
+                <div id="allArticleList" class="article-list"></div>
+            </div>
+        </div>
     </div>
-  </div>
-  <script src="popup.js"></script>
+    <script src="popup.js"></script>
 </body>
+
 </html>
